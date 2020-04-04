@@ -1,56 +1,46 @@
-const http = new easyHTTP();
+const posts = [
+  { title: "Post 1", body: "This is post 1." },
+  { title: "Post 2", body: "This is post 2." }
+];
 
-//Get Posts
-/* http.get("https://jsonplaceholder.typicode.com/posts", function(err, posts) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(posts);
+/* function createPosts() {
+    setTimeout(function(post) {
+      posts.push(post);
+    }, 2000);
   }
-}); */
-
-//Create data
-const data = {
-  title: "Custom Post",
-  body: "This is a custom post"
-};
-
-//Create Post
-/* http.post("https://jsonplaceholder.typicode.com/posts", data, function(
-  err,
-  post
-) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(post);
+  
+  function getPosts() {
+    setTimeout(function() {
+      let output = "";
+      posts.forEach(function(post) {
+        output += `<li>${post.title}</li>`;
+      });
+      document.body.innerHTML = output;
+    }, 1000);
   }
-}); */
+  
+  createPosts({ title: "Post 3", body: "This is post 3." });
+  
+  getPosts(); */
 
-//Update post
-//num variable is example, any number could be here and it will feed to the url to target any post we need
-/* let num = 6;
-http.put(`https://jsonplaceholder.typicode.com/posts/${num}`, data, function(
-  err,
-  post
-) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(post);
-  }
-}); */
+//adding getPosts function as a callback to createPosts here allows it to asynchronously get the posts before creating them to make sure it is getting the most up to date data
+function createPosts(post) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      posts.push(post);
+      resolve();
+    }, 2000);
+  });
+}
 
-//delete post
-//num variable is example, any number could be here and it will feed to the url to target any post we need
-let num = 90;
-http.delete(`https://jsonplaceholder.typicode.com/posts/${num}`, function(
-  err,
-  response
-) {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(response);
-  }
-});
+function getPosts() {
+  setTimeout(function() {
+    let output = "";
+    posts.forEach(function(post) {
+      output += `<li>${post.title}</li>`;
+    });
+    document.body.innerHTML = output;
+  }, 1000);
+}
+
+createPosts({ title: "Post 3", body: "This is post 3." }).then(getPosts);
